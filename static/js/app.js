@@ -21,7 +21,7 @@ d3.json('samples.json').then(data => {
 
 // Populate metadata
 function populateMetadata(selectedSampleID){
-        fullDataset.then(data => {
+        d3.json('samples.json').then(data => {
         
         // Select metadata from complete dataset
         var metadata = data.metadata;
@@ -29,15 +29,16 @@ function populateMetadata(selectedSampleID){
         // Filter metadata by sample ID (selectedSample variable) 
         var sampleData = metadata.filter(sample => sample.id == selectedSampleID);
         var result = sampleData[0];
+        console.log(result)
         var mdPanel = d3.select("#sample-metadata");
-        result.forEach(row => {
+        Object.entries(result).forEach(([key, value]) => {
             mdPanel
-            .append("br")
-            .text(row)
-            .property("value", row);
+            .append("h6")
+            .text(`${key}: ${value}`)
+            .property("value",`${key}: ${value}`);
         });
     });
 }
 
 // Listener
-sel.on('change', populateMetadata(sel.value));
+sel.on('change', populateMetadata(940));
