@@ -61,12 +61,21 @@ function top10(sampleID) {
 
         console.log(filteredSampleData);
         // // Find top 10 
-         var byOtuID = filteredSampleData.otu_ids.slice(0, 10).reverse();
+        var byOtuID = filteredSampleData.otu_ids.slice(0, 10).reverse();
         var byOtuLabels = filteredSampleData.otu_labels.slice(0, 10).reverse();
         var byOtuSamples = filteredSampleData.sample_values.slice(0, 10).reverse();
         console.log(byOtuID, byOtuLabels, byOtuSamples);
         
-    
+        var data = [
+                    {
+                        x: byOtuSamples,
+                        y: byOtuID.map(otuID => `OTU ${otuID}`),
+                        type: 'bar',
+                        orientation: 'h',
+                    }
+                ];
+                Plotly.newPlot('bar', data);        
+
         });
 
         } 
