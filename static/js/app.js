@@ -60,14 +60,15 @@ function top10(sampleID) {
         })
         
         // Pull arrays from the object
-        var fullOtuLabels = byOtuValue.map(sample => sample.otu_labels);
+        var labels = byOtuValue.otu_labels;
+        var fullOtuLabels = Object.values(labels);
         var fullSampleValues = byOtuValue.map(sample => sample.sample_values);
         
         // Slice out top 10
-        var otuLabels = fullOtuLabels.slice(9);
-        var sampleValues = fullSampleValues.slice(9);
+        // var otuLabels = fullOtuLabels.slice(9);
+        // var sampleValues = fullSampleValues.slice(9);
 
-        console.log(typeof otuLabels, typeof sampleValues);
+        console.log(fullOtuLabels, fullSampleValues);
         // var topOTU = Object.values(filteredSampleData.sample_values).sort(function compareFunction(firstNum, secondNum) {
         //     return sample_values[secondNum] - sample_values[firstNum]
         //   });
