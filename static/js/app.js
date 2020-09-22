@@ -54,10 +54,10 @@ function populateMetadata(sampleID) {
                 value: result.wfreq,
                 title: { text: "Wash Frequency" },
                 type: "indicator",
-                mode: "gauge+number"
-                // gauge: {
-                //     axis: { range: [null, 500] }
-                // }
+                mode: "gauge+number",
+                gauge: {
+                    axis: { range: [0, 10] }
+                }
             }
         ];
         
