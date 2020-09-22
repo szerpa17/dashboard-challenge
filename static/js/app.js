@@ -89,6 +89,7 @@ function top10(sampleID) {
             text: bpOtuLabels,
             mode: 'markers',
             marker: {
+            color:bpOtuID,
             colorscale: 'Earth',
             size: bpOtuSamples.map( values => values)
             }
