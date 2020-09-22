@@ -76,9 +76,34 @@ function top10(sampleID) {
                         text: barOtuLabels,
                     }
                 ];
-                Plotly.newPlot('bar', data);
+         Plotly.newPlot('bar', data);
     
         // Bubble plot
+        var bpOtuID = filteredSampleData.otu_ids;
+        var bpOtuLabels = filteredSampleData.otu_labels;
+        var bpOtuSamples = filteredSampleData.sample_values;
+
+        var trace1 = {
+            x: bpOtuID,
+            y: bpOtuSamples,
+            text: bpOtuLabels,
+            mode: 'markers',
+            marker: {
+            colorscale: 'Earth',
+            size: bpOtuSamples.map( values => values)
+            }
+        };
+        
+        var data2 = [trace1];
+        
+        var layout = {
+            title: 'Bubble Chart Hover Text',
+            showlegend: false,
+            height: 600,
+            width: 1200
+        };
+        
+        Plotly.newPlot('bubble', data2, layout);
 
         });
 
