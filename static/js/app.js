@@ -29,7 +29,7 @@ function populateMetadata(sampleID) {
 
         // Select metadata from complete dataset
         var metadata = data.metadata;
-
+        console.log(data);
         // Filter metadata by sample ID (selectedSample variable) 
         var sampleData = metadata.filter(sample => sample.id == sampleID);
         var result = sampleData[0];
@@ -46,6 +46,23 @@ function populateMetadata(sampleID) {
                 .append("h6")
                 .text(`${key}: ${value}`);
         });
+       
+        // Gaudge
+        var data = [
+            {
+                // domain: { x: [0, 1], y: [0, 1] },
+                value: result.wfreq,
+                title: { text: "Wash Frequency" },
+                type: "indicator",
+                mode: "gauge+number"
+                // gauge: {
+                //     axis: { range: [null, 500] }
+                // }
+            }
+        ];
+        
+        var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+        Plotly.newPlot('gauge', data, layout);
     });
 }
 
