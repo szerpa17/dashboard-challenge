@@ -61,26 +61,30 @@ function top10(sampleID) {
 
         console.log(filteredSampleData);
         // // Find top 10 
-        var byOtuID = filteredSampleData.otu_ids.slice(0, 10).reverse();
-        var byOtuLabels = filteredSampleData.otu_labels.slice(0, 10).reverse();
-        var byOtuSamples = filteredSampleData.sample_values.slice(0, 10).reverse();
-        console.log(byOtuID, byOtuLabels, byOtuSamples);
+        var barOtuID = filteredSampleData.otu_ids.slice(0, 10).reverse();
+        var barOtuLabels = filteredSampleData.otu_labels.slice(0, 10).reverse();
+        var barOtuSamples = filteredSampleData.sample_values.slice(0, 10).reverse();
+//         console.log(byOtuID, byOtuLabels, byOtuSamples);
         
+        // Bar Plot
         var data = [
                     {
-                        x: byOtuSamples,
-                        y: byOtuID.map(otuID => `OTU ${otuID}`),
+                        x: barOtuSamples,
+                        y: barOtuID.map(otuID => `OTU ${otuID}`),
                         type: 'bar',
                         orientation: 'h',
+                        text: barOtuLabels,
                     }
                 ];
-                Plotly.newPlot('bar', data);        
+                Plotly.newPlot('bar', data);
+    
+        // Bubble plot
 
         });
 
         } 
 
-//  Bubble plot
+
 
 // Function to update the page when the drop down value is changed
 function optionChanged(newSample) {
