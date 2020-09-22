@@ -4,79 +4,64 @@ var fullDataset = d3.json('samples.json');
 // Select drop down object
 var sel = d3.select("#selDataset");
 
+function init() {
+    // Populate 'Test Subject ID No' drop down
+    fullDataset.then(data => {
+        var names = data.names;
 
-// Populate 'Test Subject ID No' drop down
-fullDataset.then(data => {
-    console.log(data);    
+        names.forEach(name => {
+            sel
+                .append("option")
+                .text(name)
+                .property("value", name);
+        });
 
-    data.names.forEach(name => {
-        sel
-        .append("option")
-        .text(name)
-        .property("value", name);
-
+        populateMetadata(names[0]);
+        top10(names[0]);
     });
+};
 
-})
+init();
 
 // Populate metadata
-function populateMetadata(sampleID){
-        fullDataset.then(data => {
-        
+function populateMetadata(sampleID) {
+    fullDataset.then(data => {
+
         // Select metadata from complete dataset
-        var metadata = data.metadata;
-        
+        var metadata = data.metadata;
+
         // Filter metadata by sample ID (selectedSample variable) 
-        var sampleData = metadata.filter(sample => sample.id ==sampleID);
-        var result = sampleData[0];
+        var sampleData = metadata.filter(sample => sample.id == sampleID);
+        var result = sampleData[0];
         // console.log(result)
-        var mdPanel = d3.select("#sample-metadata");
+        var mdPanel = d3.select("#sample-metadata");
         // Attention - Address duplicates
-//         mdPanel.property('text', '');
-        
-        Object.entries(result).forEach(([key, value]) => {
-            mdPanel
-            // .enter()
-            .append("h6")
-            .text(`${key}: ${value}`);
-        });
-    });
+        //         mdPanel.property('text', '');
+
+        mdPanel.html('');
+
+        Object.entries(result).forEach(([key, value]) => {
+            mdPanel
+                // .enter()
+                .append("h6")
+                .text(`${key}: ${value}`);
+        });
+    });
 }
 
 //  Top 10 OTUs found in that individual
 function top10(sampleID) {
-    fullDataset.then(data => {
-        
+    fullDataset.then(data => {
+
         // Select metadata from complete dataset
-        var samples = data.samples;
+        var samples = data.samples;
+        // console.log(samples)
         // Filter samples by ID
-        var filteredSampleData = samples.filter(sample => sample.id == sampleID);
-    
-        // Find top 10 
-        var byOtuValue = filteredSampleData.slice(0);
-        // Sorting function (descending order)
-        byOtuValue.sort(function (a,b) {
-            return b.sample_values - a.sample_values;
-        })
-        
-        // Pull arrays from the object
-        var labels = byOtuValue.otu_labels;
-        var fullOtuLabels = Object.values(labels);
-        var fullSampleValues = byOtuValue.map(sample => sample.sample_values);
-        
-        // Slice out top 10
-        // var otuLabels = fullOtuLabels.slice(9);
-        // var sampleValues = fullSampleValues.slice(9);
+        var filteredSampleData = samples.filter(sample => sample.id == sampleID)[0];
 
-        console.log(fullOtuLabels, fullSampleValues);
-        // var topOTU = Object.values(filteredSampleData.sample_values).sort(function compareFunction(firstNum, secondNum) {
-        //     return sample_values[secondNum] - sample_values[firstNum]
-        //   });
-        // console.log(filteredSampleData);
+        console.log(filteredSampleData);
+        // // Find top 10 
 
-        // Object.entries(result).forEach(([key, value]) => {
-});
-}
 
 //  Bubble plot
 
