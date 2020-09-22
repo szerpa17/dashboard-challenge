@@ -51,17 +51,23 @@ function top10(sampleID) {
         var samples = data.samples;
         // Filter samples by ID
         var filteredSampleData = samples.filter(sample => sample.id == sampleID);
-        
-        // Pull arrays from the object
-        // var otu_labels = filteredSampleData.map(sample => sample.otu_labels);
-        // var sample_values = filteredSampleData.map(sample => sample.sample_values);
-        
+    
         // Find top 10 
-        var byOTUValue = filteredSampleData.slice(0);
-        console.log(byOTUValue);
-        byOTUValue.sort(function (a,b) {
+        var byOtuValue = filteredSampleData.slice(0);
+        // Sorting function (descending order)
+        byOtuValue.sort(function (a,b) {
             return b.sample_values - a.sample_values;
         })
+        
+        // Pull arrays from the object
+        var fullOtuLabels = byOtuValue.map(sample => sample.otu_labels);
+        var fullSampleValues = byOtuValue.map(sample => sample.sample_values);
+        
+        // Slice out top 10
+        var otuLabels = fullOtuLabels.slice(9);
+        var sampleValues = fullSampleValues.slice(9);
+
+        console.log(typeof otuLabels, typeof sampleValues);
         // var topOTU = Object.values(filteredSampleData.sample_values).sort(function compareFunction(firstNum, secondNum) {
         //     return sample_values[secondNum] - sample_values[firstNum]
         //   });
