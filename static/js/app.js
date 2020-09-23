@@ -1,56 +1,63 @@
-// Select all data
+// Variable to access all data in the json file
 var fullDataset = d3.json('samples.json');
 
-// Select drop down object
-var sel = d3.select("#selDataset");
 
+// Initialization function
 function init() {
+    // Select dropdown location
+    var sel = d3.select("#selDataset");
+
     // Populate 'Test Subject ID No' drop down
     fullDataset.then(data => {
+        // Variable to access the names array
         var names = data.names;
 
+        // Iterate through the names array to populate the drop down options
         names.forEach(name => {
             sel
                 .append("option")
                 .text(name)
                 .property("value", name);
         });
-
-        populateMetadata(names[0]);
-        top10(names[0]);
+        
+        // Populate default visualizations
+        populateMetadataAndGauge(names[0]);
+        barAndBubblePlots(names[0]);
     });
 };
 
+// Initialize page
 init();
 
-// Populate metadata
-function populateMetadata(sampleID) {
+// Populate metadata and related gauge chart 
+function populateMetadataAndGauge(sampleID) {
     fullDataset.then(data => {
 
         // Select metadata from complete dataset
         var metadata = data.metadata;
-        console.log(data);
+
         // Filter metadata by sample ID (selectedSample variable) 
         var sampleData = metadata.filter(sample => sample.id == sampleID);
+        
+        
         var result = sampleData[0];
-        // console.log(result)
+        console.log(sampleData)
+        console.log(result)
         var mdPanel = d3.select("#sample-metadata");
-        // Attention - Address duplicates
-        //         mdPanel.property('text', '');
+
 
         mdPanel.html('');
 
         Object.entries(result).forEach(([key, value]) => {
             mdPanel
-                // .enter()
                 .append("h6")
                 .text(`${key}: ${value}`);
         });
        
-        // Gaudge
+        // Gauge
         var data = [
             {
-                // domain: { x: [0, 1], y: [0, 1] },
+                domain: { x: [0, 1], y: [0, 1] },
                 value: result.wfreq,
                 title: { text: "Wash Frequency" },
                 type: "indicator",
@@ -67,32 +74,31 @@ function populateMetadata(sampleID) {
 }
 
 //  Top 10 OTUs found in that individual
-function top10(sampleID) {
+function barAndBubblePlots(sampleID) {
     fullDataset.then(data => {
 
         // Select metadata from complete dataset
         var samples = data.samples;
-        // console.log(samples)
+
         // Filter samples by ID
         var filteredSampleData = samples.filter(sample => sample.id == sampleID)[0];
 
         console.log(filteredSampleData);
-        // // Find top 10 
+        // Find top 10 OTU
         var barOtuID = filteredSampleData.otu_ids.slice(0, 10).reverse();
         var barOtuLabels = filteredSampleData.otu_labels.slice(0, 10).reverse();
         var barOtuSamples = filteredSampleData.sample_values.slice(0, 10).reverse();
-//         console.log(byOtuID, byOtuLabels, byOtuSamples);
         
         // Bar Plot
         var data = [
-                    {
-                        x: barOtuSamples,
-                        y: barOtuID.map(otuID => `OTU ${otuID}`),
-                        type: 'bar',
-                        orientation: 'h',
-                        text: barOtuLabels,
-                    }
-                ];
+                {
+                    x: barOtuSamples,
+                    y: barOtuID.map(otuID => `OTU ${otuID}`),
+                    type: 'bar',
+                    orientation: 'h',
+                    text: barOtuLabels,
+                }
+            ];
          Plotly.newPlot('bar', data);
     
         // Bubble plot
@@ -123,17 +129,13 @@ function top10(sampleID) {
         
         Plotly.newPlot('bubble', data2, layout);
 
-        });
+    });
 
-        } 
-
+} 
 
 
 // Function to update the page when the drop down value is changed
 function optionChanged(newSample) {
-    populateMetadata(newSample);
-    top10(newSample);
+    populateMetadataAndGauge(newSample);
+    barAndBubblePlots(newSample);
 }
-
-// Listener
-//sel.on('change',optionChanged(941));
