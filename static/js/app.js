@@ -29,7 +29,7 @@ function init() {
 // Initialize page
 init();
 
-// Populate metadata and related gauge chart 
+// Populate metadata and related gauge visualization 
 function populateMetadataAndGauge(sampleID) {
     fullDataset.then(data => {
 
@@ -45,9 +45,10 @@ function populateMetadataAndGauge(sampleID) {
         console.log(result)
         var mdPanel = d3.select("#sample-metadata");
 
-
+        // Remove any prior code (to prevent duplicates)
         mdPanel.html('');
 
+        // Populate new sample demographic data
         Object.entries(result).forEach(([key, value]) => {
             mdPanel
                 .append("h6")
@@ -73,7 +74,7 @@ function populateMetadataAndGauge(sampleID) {
     });
 }
 
-//  Top 10 OTUs found in that individual
+//  Chart 
 function barAndBubblePlots(sampleID) {
     fullDataset.then(data => {
 
